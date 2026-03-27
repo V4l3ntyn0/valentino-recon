@@ -28,9 +28,9 @@ show_help() {
     echo "║                                                                             ║"
     echo "║ Ejemplos:                                                                   ║"
     echo "║   sudo valentino-recon --anon scanme.nmap.org                               ║"
-    echo "║   sudo valentino-recon --anon 161.132.53.58                                 ║"
-    echo "║   sudo valentino-recon --anon 161.132.53.58 -p 22,80,443                    ║"
-    echo "║   sudo valentino-recon --anon group-ism.com -p-                              ║"
+    echo "║   sudo valentino-recon --anon scanme.nmap.org                               ║"
+    echo "║   sudo valentino-recon --anon scanme.nmap.org -p 22,80,443                  ║"
+    echo "║   sudo valentino-recon --anon scanme.nmap.org -p-                           ║"
     echo "║                                                                             ║"
     echo "║ Nuevo en v2.0:                                                              ║"
     echo "║   • Resolución DNS automática (dominio → IP)                                ║"
@@ -53,25 +53,25 @@ check_root() {
 # Función: Resolver dominio a IP (con validación)
 resolve_target() {
     local target=$1
-    
+
     # Si ya es una IP válida, devolverla
     if [[ $target =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        echo -e "${GREEN}✅ Target es IP válida: $target${NC}"
+        echo -e "${GREEN}✅ Target es IP válida: $target${NC}" >&2
         echo "$target"
         return
     fi
-    
+
     # Si no, resolver DNS
-    echo -e "${YELLOW}🔍 Resolviendo DNS para: $target${NC}"
+    echo -e "${YELLOW}🔍 Resolviendo DNS para: $target${NC}" >&2
     RESOLVED_IP=$(dig +short $target 2>/dev/null | grep -E '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$' | head -1)
-    
+
     if [ -z "$RESOLVED_IP" ]; then
-        echo -e "${RED}❌ No se pudo resolver el dominio: $target${NC}"
-        echo "   Verifica el dominio o usa IP directamente"
+        echo -e "${RED}❌ No se pudo resolver el dominio: $target${NC}" >&2
+        echo "   Verifica el dominio o usa IP directamente" >&2
         exit 1
     fi
-    
-    echo -e "${GREEN}✅ Dominio resuelto a: $RESOLVED_IP${NC}"
+
+    echo -e "${GREEN}✅ Dominio resuelto a: $RESOLVED_IP${NC}" >&2
     echo "$RESOLVED_IP"
 }
 
@@ -95,16 +95,26 @@ check_tor() {
 # Función: Verificar conectividad a través de Tor
 verify_tor_connection() {
     echo -e "${BLUE}🌐 Verificando conectividad vía Tor...${NC}"
-    TOR_IP=$(proxychains curl -s --max-time 10 ifconfig.me 2>/dev/null)
     
-    if [ -z "$TOR_IP" ]; then
-        echo -e "${RED}❌ No se pudo conectar a través de Tor${NC}"
-        echo "   Verifica que Tor esté funcionando correctamente"
-        exit 1
-    fi
+    # Intentar hasta 3 veces, esperando que Tor responda
+    for i in 1 2 3; do
+        echo -e "${YELLOW}   Intento $i de 3...${NC}"
+        TOR_IP=$(curl --socks5-hostname 127.0.0.1:9050 -s ifconfig.me 2>/dev/null)
+        
+        if [ -n "$TOR_IP" ]; then
+            echo -e "${GREEN}✅ Tor funcionando. IP de salida: $TOR_IP${NC}"
+            return 0
+        fi
+        
+        echo -e "${YELLOW}   No respondió, reintentando en 5 segundos...${NC}"
+        sleep 5
+    done
     
-    echo -e "${GREEN}✅ Tor funcionando. IP de salida: $TOR_IP${NC}"
-}
+    # Si después de 3 intentos no funciona
+    echo -e "${RED}❌ Tor no está funcionando correctamente${NC}"
+    echo -e "${RED}   Ejecuta: sudo systemctl restart tor${NC}"
+    exit 1
+ }
 
 # Función: Analizar y mostrar servicios críticos después del escaneo
 analyze_results() {

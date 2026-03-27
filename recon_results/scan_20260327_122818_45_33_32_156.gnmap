@@ -1,0 +1,4 @@
+# Nmap 7.95 scan initiated Fri Mar 27 12:30:40 2026 as: nmap -sS -Pn --disable-arp-ping --source-port 210 -F -oA ./recon_results/scan_20260327_122818_45_33_32_156 45.33.32.156
+Host: 45.33.32.156 (scanme.nmap.org)	Status: Up
+Host: 45.33.32.156 (scanme.nmap.org)	Ports: 22/open/tcp//ssh///, 25/filtered/tcp//smtp///, 26/filtered/tcp//rsftp///, 80/open/tcp//http///, 445/filtered/tcp//microsoft-ds///	Ignored State: closed (95)
+# Nmap done at Fri Mar 27 12:30:42 2026 -- 1 IP address (1 host up) scanned in 1.78 seconds

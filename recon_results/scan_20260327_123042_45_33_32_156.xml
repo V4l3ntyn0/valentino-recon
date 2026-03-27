@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.95 scan initiated Fri Mar 27 12:33:27 2026 as: nmap -sS -Pn -&#45;disable-arp-ping -&#45;source-port 332 -p- -oA ./recon_results/scan_20260327_123042_45_33_32_156 45.33.32.156 -->
+<nmaprun scanner="nmap" args="nmap -sS -Pn -&#45;disable-arp-ping -&#45;source-port 332 -p- -oA ./recon_results/scan_20260327_123042_45_33_32_156 45.33.32.156" start="1774636407" startstr="Fri Mar 27 12:33:27 2026" version="7.95" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1774636414" endtime="1774636513"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="45.33.32.156" addrtype="ipv4"/>
+<hostnames>
+<hostname name="scanme.nmap.org" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="65525">
+<extrareasons reason="reset" count="65525" proto="tcp" ports="1-21,23-24,27-79,81-444,446-2524,2526-3534,3536-8024,8026-9928,9930-31336,31338-65535"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="42"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="25"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="smtp" method="table" conf="3"/></port>
+<port protocol="tcp" portid="26"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="rsftp" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="44"/><service name="http" method="table" conf="3"/></port>
+<port protocol="tcp" portid="445"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="microsoft-ds" method="table" conf="3"/></port>
+<port protocol="tcp" portid="2525"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ms-v-worlds" method="table" conf="3"/></port>
+<port protocol="tcp" portid="3535"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ms-la" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8025"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ca-audit-da" method="table" conf="3"/></port>
+<port protocol="tcp" portid="9929"><state state="open" reason="syn-ack" reason_ttl="42"/><service name="nping-echo" method="table" conf="3"/></port>
+<port protocol="tcp" portid="31337"><state state="open" reason="syn-ack" reason_ttl="44"/><service name="Elite" method="table" conf="3"/></port>
+</ports>
+<times srtt="122290" rttvar="1105" to="126710"/>
+</host>
+<runstats><finished time="1774636513" timestr="Fri Mar 27 12:35:13 2026" summary="Nmap done at Fri Mar 27 12:35:13 2026; 1 IP address (1 host up) scanned in 106.34 seconds" elapsed="106.34" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

@@ -32,7 +32,7 @@ Ver archivo [LICENSE](LICENSE) para más información.
 ## 🚀 Instalación
 
 ```bash
-git clone https://github.com/V4l3ntyn0/valentino-recon.git
+git clone https://github.com/V4l3ntyn0/Valentino-reconV2.git
 cd valentino-recon
 chmod +x valentino-recon.sh
 sudo cp valentino-recon.sh /usr/local/bin/valentino-recon
